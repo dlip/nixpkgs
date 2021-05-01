@@ -8,6 +8,7 @@ buildGoPackage rec {
   subPackages = [ "cmd/werf" ];
 
   runVend = true;
+  vendorSha256 = "";
   src = fetchFromGitHub {
     owner = "werf";
     repo = "werf";
