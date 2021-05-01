@@ -13,6 +13,6 @@ buildGoPackage rec {
     owner = "werf";
     repo = "werf";
     rev = "5af62f45a0df51b9af10fb8477392bd7236a208d";
-    sha256 = "t0mETZdxaA4J0yHVZ+3A/9BUZ+L9hBNkDMGNQOgAg/A=";
+    sha256 = "";
   };
 }
