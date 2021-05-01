@@ -8,7 +8,7 @@ buildGoPackage rec {
   subPackages = [ "cmd/werf" ];
 
   runVend = true;
-  vendorSha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  vendorSha256 = lib.fakeSha256;
   src = fetchFromGitHub {
     owner = "werf";
     repo = "werf";
