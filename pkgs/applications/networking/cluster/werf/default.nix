@@ -7,6 +7,7 @@ buildGoPackage rec {
   goPackagePath = "github.com/werf/werf";
   subPackages = [ "cmd/werf" ];
 
+  runVend = true;
   src = fetchFromGitHub {
     owner = "werf";
     repo = "werf";
