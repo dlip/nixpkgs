@@ -7,7 +7,6 @@ buildGoPackage rec {
   goPackagePath = "github.com/werf/werf";
 
   runVend = true;
-  deleteVendor = true;
 
   src = fetchFromGitHub {
     owner = "werf";
