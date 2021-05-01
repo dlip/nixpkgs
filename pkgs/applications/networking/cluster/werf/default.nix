@@ -5,7 +5,7 @@ buildGoPackage rec {
   version = "1.2.10";
 
   goPackagePath = "github.com/werf/werf";
-  subPackages = [ "cmd/werf" ];
+  subPackages = [ "./cmd/werf/main.go" ];
   doCheck = false;
 
   src = fetchFromGitHub {
