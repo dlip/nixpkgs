@@ -3,10 +3,7 @@
 buildGoPackage rec {
   pname = "werf";
   version = "1.2.9";
-
-  goPackagePath = "github.com/werf/werf";
   subPackages = [ "cmd/werf" ];
-
   src = fetchFromGitHub {
     owner = "werf";
     repo = "werf";
