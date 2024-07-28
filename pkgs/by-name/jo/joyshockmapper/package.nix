@@ -7,6 +7,7 @@
   gtk3,
   libappindicator-gtk3,
   libevdev,
+  pcre,
   pcre2,
   util-linux,
   libselinux,
@@ -58,6 +59,7 @@ stdenv.mkDerivation rec {
     xorg.libXdmcp
     lerc
     libxkbcommon
+    pcre
     pcre2
     epoxy
     libXtst
@@ -66,6 +68,19 @@ stdenv.mkDerivation rec {
     magic-enum
   ];
 
+  # env.NIX_CFLAGS_COMPILE = "-I${SDL2.dev}/include/SDL2 -I ${libevdev}/include/libevdev-1.0";
+
+  preConfigure = ''
+
+    export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I ${SDL2.dev}/include/SDL2 -I ${libevdev}/include/libevdev-1.0 $(pkg-config --cflags gtk+-3.0 appindicator3-0.1)"
+    echo $NIX_CFLAGS_COMPILE
+
+
+    # echo ${libevdev}
+    # pkg-config --cflags --libs gtk+-3.0
+    pkg-config  --list-all | grep pcre
+    # exit 1
+  '';
   postUnpack = ''
     pushd "$sourceRoot/JoyShockMapper"
     cp --no-preserve=mode,ownership ${pocketfsm}/include/* include
@@ -88,5 +103,8 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [];
     mainProgram = "joyshockmapper";
     platforms = platforms.all;
+    pkgConfigModules = [
+      "gtk+-3.0"
+    ];
   };
 }
