@@ -1,6 +1,6 @@
 {
   lib,
-  stdenv,
+  clangStdenv,
   fetchFromGitHub,
   cmake,
   pkg-config,
@@ -22,7 +22,7 @@
   SDL2,
   magic-enum,
 }:
-stdenv.mkDerivation rec {
+clangStdenv.mkDerivation rec {
   pname = "joyshockmapper";
   version = "3.5.4";
 
@@ -45,9 +45,9 @@ stdenv.mkDerivation rec {
     hash = "sha256-zoiSnVLDUeQ0oxJ9yns8OX3dMxgCHrUu2f0JWZqm1K8=";
   };
 
-  nativeBuildInputs = [
-    cmake
-    pkg-config
+  strictDeps = true;
+  nativeBuildInputs = [cmake pkg-config];
+  buildInputs = [
     gtk3
     libappindicator-gtk3
     libevdev
@@ -64,21 +64,41 @@ stdenv.mkDerivation rec {
     epoxy
     libXtst
     SDL2
-    SDL2.dev
     magic-enum
   ];
 
-  # env.NIX_CFLAGS_COMPILE = "-I${SDL2.dev}/include/SDL2 -I ${libevdev}/include/libevdev-1.0";
+  # NIX_LDFLAGS = ''
+  #   -rpath ${libevdev.out}/lib
+  #   -rpath ${gtk3.out}/lib
+  #   -rpath ${gtk3.dev}/lib
+  #   -rpath ${SDL2.out}/lib
+  #   -rpath ${SDL2.dev}/lib
+  #   -rpath ${libappindicator-gtk3.out}/lib
+  #   -rpath ${libappindicator-gtk3.dev}/lib
+  # '';
 
+  # NIX_LDFLAGS = "--as-needed -rpath ${lib.makeLibraryPath nativeBuildInputs}";
+
+  # installFlags = [
+  #   "PREFIX=${placeholder "out"}"
+  #   "CPPFLAGS=$NIX_CFLAGS_COMPILE"
+  #   "LDFLAGS=$NIX_LDFLAGS"
+  # ];
+
+  installFlags = [
+    "PREFIX=${placeholder "out"}"
+    "CPPFLAGS=$NIX_CFLAGS_COMPILE"
+    "LDFLAGS=$NIX_LDFLAGS"
+  ];
   preConfigure = ''
-
     export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I ${SDL2.dev}/include/SDL2 -I ${libevdev}/include/libevdev-1.0 $(pkg-config --cflags gtk+-3.0 appindicator3-0.1)"
-    echo $NIX_CFLAGS_COMPILE
+    # echo $NIX_CFLAGS_COMPILE
 
 
     # echo ${libevdev}
     # pkg-config --cflags --libs gtk+-3.0
-    pkg-config  --list-all | grep pcre
+    # pkg-config  --list-all | grep pcre
+    # echo $NIX_LDFLAGS
     # exit 1
   '';
   postUnpack = ''
@@ -90,9 +110,6 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./cmake.patch
-  ];
-
-  buildInputs = [
   ];
 
   meta = with lib; {
