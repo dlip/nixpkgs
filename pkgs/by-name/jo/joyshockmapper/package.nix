@@ -19,7 +19,6 @@
   epoxy,
   libXtst,
   SDL2,
-  libjoyshock,
   magic-enum,
 }:
 stdenv.mkDerivation rec {
@@ -64,7 +63,6 @@ stdenv.mkDerivation rec {
     libXtst
     SDL2
     SDL2.dev
-    libjoyshock
     magic-enum
   ];
 
